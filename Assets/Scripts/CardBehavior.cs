@@ -14,6 +14,12 @@ public class Card : MonoBehaviour
 
     public GameManager manager;
 
+    private void Start()
+    {
+        CardBackground.color = White;
+
+    }
+
     private void OnMouseDown()
     {
         if (hasBeenPlayed == false)
