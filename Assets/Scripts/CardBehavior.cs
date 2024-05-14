@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Card : MonoBehaviour
+public class CardBehavior : MonoBehaviour
 {
     public bool hasBeenPlayed;
 
-    public Material CardBackground;
+    public SpriteRenderer CardBackground;
     public Color White;
     public Color Selected;
 
@@ -14,11 +14,12 @@ public class Card : MonoBehaviour
 
     public GameManager manager;
 
-    private void Start()
+    public void Start()
     {
         CardBackground.color = White;
-
+        hasBeenPlayed = false;
     }
+
 
     private void OnMouseDown()
     {
@@ -40,4 +41,5 @@ public class Card : MonoBehaviour
             manager.fruitSelected = null;
         }
     }
+
 }

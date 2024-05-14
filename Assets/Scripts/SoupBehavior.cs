@@ -10,8 +10,11 @@ public class SoupBehavior : MonoBehaviour
 
     public GameManager manager;
     public GameObject fruitToStack;
+    public CardBehavior cardBehavior;
 
+    public int stackLenght = 0;
     public string fruitName;
+    public int numberToWin;
 
     private void OnMouseDown()
     {
@@ -26,6 +29,11 @@ public class SoupBehavior : MonoBehaviour
         else
         {
             Debug.Log("Rien de selectionné");
+            fruitToStack = stack.Peek();
+            stack.Pop().SetActive(true);
+            cardBehavior = fruitToStack.GetComponent<CardBehavior>();
+            cardBehavior.Start();
+            stackLenght = stack.Count;
         }
 
     }
@@ -36,16 +44,23 @@ public class SoupBehavior : MonoBehaviour
         fruitToStack.SetActive(false);
         manager.alreadySelected = false;
         manager.fruitSelected = null;
+        stackLenght = stack.Count;
+        if (stackLenght > 4)
+        {
+            Invoke("Winning", 2f);
+        }
         Debug.Log("youhou");
     }
 
-    
-    //Toutes les fonctions fruitées
-    private void Fraise()
+    private void Winning()
     {
-        Debug.Log("Fraise");
-        
-        if (stack.Peek().CompareTag("Vert"))
+        Debug.Log("c'est gagné");
+    }
+
+    //Toutes les fonctions fruitées
+    private void Patate()
+    {        
+        if (stackLenght < 1 || stackLenght > 3)
         {
             PushingFruit();
         }
@@ -54,10 +69,48 @@ public class SoupBehavior : MonoBehaviour
             Debug.Log("Fruit pas valide");
         }
     }
-
-    private void Pomme()
+    private void Carotte()
     {
-        Debug.Log("Pomme");
-        PushingFruit();
+        if (stack.Peek().name == "Choux" || stack.Peek().name == "Courgette")
+        {
+            PushingFruit();
+        }
+        else
+        {
+            Debug.Log("Fruit pas valide");
+        }
+    }
+    private void Citrouille()
+    {
+        if (stack.Peek().name == "Choux" || stack.Peek().name == "Courgette")
+        {
+            Debug.Log("Fruit pas valide");
+        }
+        else
+        {
+            PushingFruit();
+        }
+    }
+    private void Courgette()
+    {
+        if (stack.Peek().name == "Patate" || stack.Peek().name == "Carotte")
+        {
+            PushingFruit();
+        }
+        else
+        {
+            Debug.Log("Fruit pas valide");
+        }
+    }
+    private void Choux()
+    {
+        if (stackLenght < 1 || stackLenght > 3)
+        {
+            PushingFruit();
+        }
+        else
+        {
+            Debug.Log("Fruit pas valide");
+        }
     }
 }
