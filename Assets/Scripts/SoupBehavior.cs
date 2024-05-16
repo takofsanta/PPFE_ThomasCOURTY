@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.Rendering.SplashScreen;
 
 public class SoupBehavior : MonoBehaviour
 {
@@ -75,7 +74,7 @@ public class SoupBehavior : MonoBehaviour
 
     
 
-    //Toutes les fonctions fruitées
+    //Toutes les fonctions Léguminées
     private void Patate()
     {        
         if (stackLenght < 1 || stackLenght > 3)
@@ -160,5 +159,6 @@ public class SoupBehavior : MonoBehaviour
 
         newPos = cardBehavior.actualPos;
         fruitToStack.transform.position = newPos;
+
     }
 }
