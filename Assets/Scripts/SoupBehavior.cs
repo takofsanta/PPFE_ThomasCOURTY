@@ -12,50 +12,68 @@ public class SoupBehavior : MonoBehaviour
     public GameObject fruitToStack;
     public CardBehavior cardBehavior;
 
+    public SpriteRenderer CardBackground;
+    public Color White;
+    public Color Wrong;
+    public Color Right;
+
     public int stackLenght = 0;
     public string fruitName;
     public int numberToWin;
 
+    Vector3 newPos;
+
+    public void TestingFruit()
+    {
+        fruitToStack = manager.fruitSelected;
+        fruitName = fruitToStack.name;
+
+        Invoke(fruitName, 0f);
+    }
+    
+    
     private void OnMouseDown()
     {
-        if (manager.alreadySelected == true)
+        if (stack.Count > 0) 
         {
-            fruitToStack = manager.fruitSelected;
-            fruitName = fruitToStack.name;
-
-            Invoke(fruitName, 0f);
-        }
-
-        else
-        {
-            Debug.Log("Rien de selectionné");
+            CardBackground.color = Right;
             fruitToStack = stack.Peek();
             stack.Pop().SetActive(true);
             cardBehavior = fruitToStack.GetComponent<CardBehavior>();
-            cardBehavior.Start();
             stackLenght = stack.Count;
+            FruitPasValide();
+        }
+        else
+        {
+            CardBackground.color = Wrong;
         }
 
     }
 
-    private void PushingFruit()
+    private void OnMouseUp()
+    {
+        CardBackground.color = White;
+
+    }
+
+    public void PushingFruit()
     {
         stack.Push(fruitToStack);
         fruitToStack.SetActive(false);
-        manager.alreadySelected = false;
         manager.fruitSelected = null;
         stackLenght = stack.Count;
         if (stackLenght > 4)
         {
             Invoke("Winning", 2f);
         }
-        Debug.Log("youhou");
     }
 
     private void Winning()
     {
         Debug.Log("c'est gagné");
     }
+
+    
 
     //Toutes les fonctions fruitées
     private void Patate()
@@ -66,41 +84,63 @@ public class SoupBehavior : MonoBehaviour
         }
         else
         {
-            Debug.Log("Fruit pas valide");
+            FruitPasValide();
         }
     }
     private void Carotte()
     {
-        if (stack.Peek().name == "Choux" || stack.Peek().name == "Courgette")
+        if (stackLenght > 0)
         {
-            PushingFruit();
+            if (stack.Peek().name == "Choux" || stack.Peek().name == "Courgette")
+            {
+                PushingFruit();
+            }
+            else
+            {
+                FruitPasValide();
+            }
         }
         else
         {
-            Debug.Log("Fruit pas valide");
+            FruitPasValide();
         }
     }
     private void Citrouille()
     {
-        if (stack.Peek().name == "Choux" || stack.Peek().name == "Courgette")
+        if (stackLenght > 0)
         {
-            Debug.Log("Fruit pas valide");
+            if (stack.Peek().name == "Choux" || stack.Peek().name == "Courgette")
+            {
+                FruitPasValide();
+            }
+            else
+            {
+                PushingFruit();
+            }
         }
         else
         {
-            PushingFruit();
+            FruitPasValide();
         }
     }
     private void Courgette()
     {
-        if (stack.Peek().name == "Patate" || stack.Peek().name == "Carotte")
+        if (stackLenght > 0)
         {
-            PushingFruit();
+            if (stack.Peek().name == "Patate" || stack.Peek().name == "Carotte")
+            {
+                PushingFruit();
+            }
+            else
+            {
+                FruitPasValide();
+            }
         }
         else
         {
-            Debug.Log("Fruit pas valide");
+            FruitPasValide();
         }
+
     }
     private void Choux()
     {
@@ -110,7 +150,15 @@ public class SoupBehavior : MonoBehaviour
         }
         else
         {
-            Debug.Log("Fruit pas valide");
+            FruitPasValide();
         }
+    }
+
+    private void FruitPasValide()
+    {
+        cardBehavior = fruitToStack.GetComponent<CardBehavior>();
+
+        newPos = cardBehavior.actualPos;
+        fruitToStack.transform.position = newPos;
     }
 }
