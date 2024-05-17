@@ -25,4 +25,9 @@ public class SceneSwitcher : MonoBehaviour
         SceneManager.LoadScene(0);
 
     }
+
+    public void Next()
+    {
+        SceneManager.LoadScene(2);
+    }
 }

@@ -22,6 +22,8 @@ public class SoupBehavior : MonoBehaviour
 
     Vector3 newPos;
 
+    public GameObject victoire;
+
     public void TestingFruit()
     {
         fruitToStack = manager.fruitSelected;
@@ -61,15 +63,16 @@ public class SoupBehavior : MonoBehaviour
         fruitToStack.SetActive(false);
         manager.fruitSelected = null;
         stackLenght = stack.Count;
+        StartCoroutine(Plouf());
         if (stackLenght > 4)
         {
-            Invoke("Winning", 2f);
+            Invoke("Winning", 0.5f);
         }
     }
 
     private void Winning()
     {
-        Debug.Log("c'est gagné");
+        victoire.SetActive(true);
     }
 
     
@@ -122,7 +125,7 @@ public class SoupBehavior : MonoBehaviour
             FruitPasValide();
         }
     }
-    private void Courgette()
+    private void Choux()
     {
         if (stackLenght > 0)
         {
@@ -141,7 +144,7 @@ public class SoupBehavior : MonoBehaviour
         }
 
     }
-    private void Choux()
+    private void Courgette()
     {
         if (stackLenght < 1 || stackLenght > 3)
         {
@@ -159,6 +162,18 @@ public class SoupBehavior : MonoBehaviour
 
         newPos = cardBehavior.actualPos;
         fruitToStack.transform.position = newPos;
+        cardBehavior.ChangCoul();
+    }
+
+    IEnumerator Plouf()
+    {
+        CardBackground.color = Right;
+        yield return new WaitForSeconds(0.3f);
+        CardBackground.color = White;
+        //yield return new WaitForSeconds(0.2f);
+        //CardBackground.color = Right;
+        //yield return new WaitForSeconds(0.2f);
+        //CardBackground.color = White;
 
     }
 }
