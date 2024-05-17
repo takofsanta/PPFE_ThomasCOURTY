@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SoupBehavior : MonoBehaviour
 {
@@ -15,14 +16,33 @@ public class SoupBehavior : MonoBehaviour
     public Color White;
     public Color Wrong;
     public Color Right;
+    public Color over;
 
     public int stackLenght = 0;
     public string fruitName;
-    public int numberToWin;
 
+    public int stackMax;
     Vector3 newPos;
 
     public GameObject victoire;
+
+    public AudioSource audioSource;
+    public AudioClip plouf;
+    public AudioClip pop;
+    public AudioClip tic;
+
+    private void Start()
+    {
+        Scene scene = SceneManager.GetActiveScene();
+        if (scene.name == "Level1")
+        {
+            stackMax = 3;
+        }
+        else
+        {
+            stackMax = 5;
+        }
+    }
 
     public void TestingFruit()
     {
@@ -31,8 +51,18 @@ public class SoupBehavior : MonoBehaviour
 
         Invoke(fruitName, 0f);
     }
-    
-    
+
+    private void OnMouseEnter()
+    {
+        CardBackground.color = over;
+    }
+
+    private void OnMouseExit()
+    {
+        CardBackground.color = White;
+
+    }
+
     private void OnMouseDown()
     {
         if (stack.Count > 0) 
@@ -42,11 +72,14 @@ public class SoupBehavior : MonoBehaviour
             stack.Pop().SetActive(true);
             cardBehavior = fruitToStack.GetComponent<CardBehavior>();
             stackLenght = stack.Count;
+            audioSource.clip = pop;
+            audioSource.Play();
             FruitPasValide();
         }
         else
         {
             CardBackground.color = Wrong;
+            clicSound();
         }
 
     }
@@ -63,8 +96,10 @@ public class SoupBehavior : MonoBehaviour
         fruitToStack.SetActive(false);
         manager.fruitSelected = null;
         stackLenght = stack.Count;
+        audioSource.clip = plouf;
+        audioSource.Play();
         StartCoroutine(Plouf());
-        if (stackLenght > 4)
+        if (stackLenght > stackMax + 1)
         {
             Invoke("Winning", 0.5f);
         }
@@ -80,7 +115,7 @@ public class SoupBehavior : MonoBehaviour
     //Toutes les fonctions Léguminées
     private void Patate()
     {        
-        if (stackLenght < 1 || stackLenght > 3)
+        if (stackLenght < 1 || stackLenght > stackMax)
         {
             PushingFruit();
         }
@@ -93,7 +128,7 @@ public class SoupBehavior : MonoBehaviour
     {
         if (stackLenght > 0)
         {
-            if (stack.Peek().name == "Choux" || stack.Peek().name == "Courgette")
+            if (stack.Peek().name == "Chou" || stack.Peek().name == "Courgette" || stack.Peek().name == "PoivronVert")
             {
                 PushingFruit();
             }
@@ -111,7 +146,7 @@ public class SoupBehavior : MonoBehaviour
     {
         if (stackLenght > 0)
         {
-            if (stack.Peek().name == "Choux" || stack.Peek().name == "Courgette")
+            if (stack.Peek().name == "Chou" || stack.Peek().name == "Courgette" || stack.Peek().name == "PoivronVert")
             {
                 FruitPasValide();
             }
@@ -125,7 +160,7 @@ public class SoupBehavior : MonoBehaviour
             FruitPasValide();
         }
     }
-    private void Choux()
+    private void Chou()
     {
         if (stackLenght > 0)
         {
@@ -146,7 +181,7 @@ public class SoupBehavior : MonoBehaviour
     }
     private void Courgette()
     {
-        if (stackLenght < 1 || stackLenght > 3)
+        if (stackLenght < 1 || stackLenght > stackMax)
         {
             PushingFruit();
         }
@@ -155,6 +190,103 @@ public class SoupBehavior : MonoBehaviour
             FruitPasValide();
         }
     }
+
+    private void Ail()
+    {
+        if (stackLenght < 4)
+        {
+            PushingFruit();
+        }
+        else
+        {
+            FruitPasValide();
+        }
+    }
+    private void Tomate()
+    {
+        if (stackLenght < 4)
+        {
+            PushingFruit();
+        }
+        else
+        {
+            FruitPasValide();
+        }
+    }
+    private void PoivronRouge()
+    {
+        if (stackLenght > 0)
+        {
+            if (stack.Peek().name == "Tomate" || stack.Peek().name == "Piment")
+            {
+                PushingFruit();
+            }
+            else
+            {
+                FruitPasValide();
+            }
+        }
+        else
+        {
+            FruitPasValide();
+        }
+    }
+    private void PoivronVert()
+    {
+        if (stackLenght > 0)
+        {
+            if (stack.Peek().name == "Tomate" || stack.Peek().name == "Piment")
+            {
+                PushingFruit();
+            }
+            else
+            {
+                FruitPasValide();
+            }
+        }
+        else
+        {
+            FruitPasValide();
+        }
+    }
+
+    private void ChouFleur()
+    {
+        if (stackLenght > 0)
+        {
+            if (stack.Peek().name == "Patate" || stack.Peek().name == "Carotte")
+            {
+                PushingFruit();
+            }
+            else
+            {
+                FruitPasValide();
+            }
+        }
+        else
+        {
+            FruitPasValide();
+        }
+    }
+    private void Piment()
+    {
+        if (stackLenght > 0)
+        {
+            if (stack.Peek().name == "Ail" || stack.Peek().name == "ChouFleur")
+            {
+                PushingFruit();
+            }
+            else
+            {
+                FruitPasValide();
+            }
+        }
+        else
+        {
+            FruitPasValide();
+        }
+    }
+
 
     private void FruitPasValide()
     {
@@ -170,10 +302,12 @@ public class SoupBehavior : MonoBehaviour
         CardBackground.color = Right;
         yield return new WaitForSeconds(0.3f);
         CardBackground.color = White;
-        //yield return new WaitForSeconds(0.2f);
-        //CardBackground.color = Right;
-        //yield return new WaitForSeconds(0.2f);
-        //CardBackground.color = White;
 
+    }
+
+    public void clicSound()
+    {
+        audioSource.clip = tic;
+        audioSource.Play();
     }
 }

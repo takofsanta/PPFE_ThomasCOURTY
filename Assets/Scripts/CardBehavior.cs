@@ -28,7 +28,6 @@ public class CardBehavior : MonoBehaviour
 
     public Color notValid;
 
-
     private Vector3 GetMousePos()
     {
         return Camera.main.WorldToScreenPoint(transform.position);
@@ -38,9 +37,9 @@ public class CardBehavior : MonoBehaviour
     private void OnMouseDown()
     {
         mousePosition = Input.mousePosition - GetMousePos();
+        actualPos = transform.position;
 
         manager.fruitSelected = fruitNumber;
-        actualPos = transform.position;
         CardBackground.color = Selected;
     }
 
@@ -54,6 +53,8 @@ public class CardBehavior : MonoBehaviour
     {
         Soupe.GetComponent<BoxCollider>().enabled = true;
         CardBackground.color = Over;
+        SoupBehavior.audioSource.clip = SoupBehavior.pop;
+        SoupBehavior.audioSource.Play();
     }
 
     private void OnMouseEnter()
@@ -74,7 +75,7 @@ public class CardBehavior : MonoBehaviour
             texte.text = "Précédé par un Légume Vert";
         }
 
-        if (fruitName == "Choux")
+        if (fruitName == "Chou")
         {
             texte.text = "Précédé par un Tubercule";
         }
@@ -82,6 +83,38 @@ public class CardBehavior : MonoBehaviour
         if (fruitName == "Citrouille")
         {
             texte.text = "Précédé par n'importe quoi sauf un Légume Vert";
+        }
+
+        if (fruitName == "Ail")
+        {
+            texte.text = "Dans les trois premiers";
+        }
+
+        if (fruitName == "Piment")
+        {
+            texte.text = "Précédé par un Légume Blanc";
+        }
+
+        if (fruitName == "Tomate")
+        {
+            texte.text = "Dans les trois premiers";
+        }
+        
+        if (fruitName == "ChouFleur")
+        {
+            texte.text = "Précédé par un Tubercule";
+        }
+
+        if (fruitName == "PoivronRouge")
+        {
+            titre.text = "Poivron";
+            texte.text = "Précédé par un Légume Rouge";
+        }
+
+        if (fruitName == "PoivronVert")
+        {
+            titre.text = "Poivron";
+            texte.text = "Précédé par un Légume Rouge";
         }
     }
     private void OnMouseExit()

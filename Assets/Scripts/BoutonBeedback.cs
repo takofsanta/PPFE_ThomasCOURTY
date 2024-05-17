@@ -10,6 +10,8 @@ public class BoutonBeedback : MonoBehaviour
     public Color click;
     public RawImage background;
 
+    SoupBehavior behavior;
+
     private void Over()
     {
         background.color = over;
@@ -18,6 +20,7 @@ public class BoutonBeedback : MonoBehaviour
     private void Click()
     {
         background.color = click;
+        behavior.clicSound();
     }
 
     private void Release()

@@ -5,6 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class SceneSwitcher : MonoBehaviour
 {
+
+
+    public AudioClip tic;
+    public AudioSource audioSource;
+    SoupBehavior soupbehavior;
     public void Jouer()
     {
         SceneManager.LoadScene(1);
@@ -29,5 +34,11 @@ public class SceneSwitcher : MonoBehaviour
     public void Next()
     {
         SceneManager.LoadScene(2);
+    }
+
+    public void clicSound()
+    {
+        audioSource.clip = tic;
+        audioSource.Play();
     }
 }
